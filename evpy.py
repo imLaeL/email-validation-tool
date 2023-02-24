@@ -40,7 +40,7 @@ cod = int(input('Digite o código: '))
 
 if cod == 1:
 	email_indiv()
-#if cod == 2:
+#elif cod == 2:
 	#email_multip()
 elif cod == 3:
 	print('até mais ;)')
