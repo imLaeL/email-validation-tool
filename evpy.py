@@ -23,6 +23,14 @@ import requests
 
 api_key = '4a6bddfb-fbdf-41b4-9e96-34de7d23d5b5'
 
+
+print("\t\t[1] EN (English)\n\t\t[2] PT-BR (Portuguese - Brazil)")
+
+try:
+	language = int(input("--> "))
+except KeyboardInterrupt:
+	print("ctrl + c")
+
 def email_indiv():
 	try:
 		email = str(input('\nEmail para verificar -> '))
@@ -35,26 +43,47 @@ def email_indiv():
 
 		status = response.json()['status']
 
-		if status == "valid":
-			print("\nO email: %s é válido\n" %email)
-		elif status == "invalid":
-			print("\nO email: %s é inválido\n" %email)
-			email_indiv()
-		else:
-			print("\nO email fornecido não foi achado\n")
-			email_indiv()
+		if language == 1:
+			if status == "valid":
+				print("\nO email: %s é válido\n" % email)
+			elif status == "invalid":
+				print("\nO email: %s é inválido\n" % email)
+				email_indiv()
+			else:
+				print("\nO email fornecido não foi achado\n")
+				email_indiv()
+		elif language == 2:
+			if status == "valid":
+				print("\nThe email: %s is valid\n" % email)
+			elif status == "invalid":
+				print("\nThe email: %s is invalid\n" % email)
+				email_indiv()
+			else:
+				print("\nThe email provided was not found\n")
+				email_indiv()
 
 	except KeyboardInterrupt:
-		print('Até mais ;)')
+		if language == 1:
+			print("Until later ;)")
+		elif language == 2:
+			print('Até mais ;)')
 
-print('cod 1 = analisar um único email\ncod 2 = analisar múltiplos emails\ncod 3 = sair')
+if language == 1:
+	print('cod 1 = analyze a single email\ncod 2 = analyze multiple emails\ncod 3 = exit\n')
+	cod = int(input('Type the code: '))
 
-cod = int(input('Digite o código: '))
+elif language == 2:
+	print('cod 1 = analisar um único email\ncod 2 = analisar múltiplos emails\ncod 3 = sair\n')
+	cod = int(input('Digite o código: '))
+
 
 if cod == 1:
-	email_indiv()
-#if cod == 2:		--> Coming Soon 
+	email_indiv() 
+#elif cod == 2:		--> Coming Soon
 	#email_multip()
 elif cod == 3:
-	print('até mais ;)')
+	if language == 1:
+		print('Goodbye!')
+	elif language == 2:
+		print('Até mais ^. .^ <- Isto é um gato')
 
