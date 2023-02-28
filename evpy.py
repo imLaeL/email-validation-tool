@@ -3,6 +3,7 @@
 #--------------------------------------------------------------#
 
 import requests
+import os
 
 #---------------- PT-BR -----------------------------------
 
@@ -23,17 +24,35 @@ import requests
 
 api_key = '4a6bddfb-fbdf-41b4-9e96-34de7d23d5b5'
 
-
-print("\t\t[1] EN (English)\n\t\t[2] PT-BR (Portuguese - Brazil)")
+def welcome():
+	os.system('cls' if os.name == 'nt' else 'clear')
+	print('''
+		\t8 8888888888 `8.`888b           ,8' 8888888 8888888888 
+		\t8 8888        `8.`888b         ,8'        8 8888       
+		\t8 8888         `8.`888b       ,8'         8 8888       
+		\t8 8888          `8.`888b     ,8'          8 8888       
+		\t8 888888888888   `8.`888b   ,8'           8 8888       
+		\t8 8888            `8.`888b ,8'            8 8888       
+		\t8 8888             `8.`888b8'             8 8888       
+		\t8 8888              `8.`888'              8 8888       
+		\t8 8888               `8.`8'               8 8888       
+		\t8 888888888888        `8.`                8 8888 
+		\n   
+	''')
+	print("\n\t\t[1] EN (English)\n\t\t[2] PT-BR (Portuguese - Brazil)\n\t\t[3] exit | sair")
 
 try:
-	language = int(input("--> "))
+	welcome()
+	language = int(input("\n--> "))
 except KeyboardInterrupt:
 	print("ctrl + c")
 
 def email_indiv():
 	try:
-		email = str(input('\nEmail para verificar -> '))
+		if language == 1:
+			email = str(input('\nEmail to verify -> '))
+		elif language == 2:
+			email = str(input('\nEmail para verificar -> '))
 
 		response = requests.get(
 		"https://isitarealemail.com/api/email/validate",
@@ -42,17 +61,8 @@ def email_indiv():
 		)
 
 		status = response.json()['status']
-
+		
 		if language == 1:
-			if status == "valid":
-				print("\nO email: %s é válido\n" % email)
-			elif status == "invalid":
-				print("\nO email: %s é inválido\n" % email)
-				email_indiv()
-			else:
-				print("\nO email fornecido não foi achado\n")
-				email_indiv()
-		elif language == 2:
 			if status == "valid":
 				print("\nThe email: %s is valid\n" % email)
 			elif status == "invalid":
@@ -61,6 +71,17 @@ def email_indiv():
 			else:
 				print("\nThe email provided was not found\n")
 				email_indiv()
+		
+		elif language == 2:
+			if status == "valid":
+				print("\nO email: %s é válido\n" % email)
+			elif status == "invalid":
+				print("\nO email: %s é inválido\n" % email)
+				email_indiv()
+			else:
+				print("\nO email fornecido não foi achado\n")
+				email_indiv()
+		
 
 	except KeyboardInterrupt:
 		if language == 1:
@@ -69,13 +90,15 @@ def email_indiv():
 			print('Até mais ;)')
 
 if language == 1:
-	print('cod 1 = analyze a single email\ncod 2 = analyze multiple emails\ncod 3 = exit\n')
+	print('\n\t\t[1] analyze a single email\n\t\t[2] analyze multiple emails\n\t\t[3] = exit\n')
 	cod = int(input('Type the code: '))
 
 elif language == 2:
-	print('cod 1 = analisar um único email\ncod 2 = analisar múltiplos emails\ncod 3 = sair\n')
+	print('\n\t\t[1] analisar um único email\n\t\t[2] analisar múltiplos emails\n\t\t[3] sair\n')
 	cod = int(input('Digite o código: '))
 
+elif language == 3:
+	print('exiting | saindo')
 
 if cod == 1:
 	email_indiv() 
