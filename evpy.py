@@ -24,28 +24,26 @@ import os
 
 api_key = '4a6bddfb-fbdf-41b4-9e96-34de7d23d5b5'
 
+# Functions
+
 def welcome():
 	os.system('cls' if os.name == 'nt' else 'clear')
 	print('''
-		\t8 8888888888 `8.`888b           ,8' 8888888 8888888888 
-		\t8 8888        `8.`888b         ,8'        8 8888       
-		\t8 8888         `8.`888b       ,8'         8 8888       
-		\t8 8888          `8.`888b     ,8'          8 8888       
-		\t8 888888888888   `8.`888b   ,8'           8 8888       
-		\t8 8888            `8.`888b ,8'            8 8888       
-		\t8 8888             `8.`888b8'             8 8888       
-		\t8 8888              `8.`888'              8 8888       
-		\t8 8888               `8.`8'               8 8888       
-		\t8 888888888888        `8.`                8 8888 
+		8 8888888888 `8.`888b           ,8' 8888888 8888888888 
+		8 8888        `8.`888b         ,8'        8 8888       
+		8 8888         `8.`888b       ,8'         8 8888       
+		8 8888          `8.`888b     ,8'          8 8888       
+		8 888888888888   `8.`888b   ,8'           8 8888       
+		8 8888            `8.`888b ,8'            8 8888       
+		8 8888             `8.`888b8'             8 8888       
+		8 8888              `8.`888'              8 8888       
+		8 8888               `8.`8'               8 8888       
+		8 888888888888        `8.`                8 8888 
 		\n   
 	''')
 	print("\n\t\t[1] EN (English)\n\t\t[2] PT-BR (Portuguese - Brazil)\n\t\t[3] exit | sair")
 
-try:
-	welcome()
-	language = int(input("\n--> "))
-except KeyboardInterrupt:
-	print("ctrl + c")
+
 
 def email_indiv():
 	try:
@@ -89,24 +87,63 @@ def email_indiv():
 		elif language == 2:
 			print('Até mais ;)')
 
-if language == 1:
-	print('\n\t\t[1] analyze a single email\n\t\t[2] analyze multiple emails\n\t\t[3] = exit\n')
-	cod = int(input('Type the code: '))
+#def email_multip(name_list):
+#	email_valid = 
+#
+#	if language == 1:
+#		name_list = str(input("Name list of the emails -> "))
+#	elif language == 2:
+#		name_list = str(input("Nome da lista de emails -> "))
+#	with open(name_list, "r") as list:
+#		emails = list.read().split('\n')
+#		for email in emails:
+#			response = requests.get(
+#			"https://isitarealemail.com/api/email/validate",
+#			params = {'email': email},
+#			headers = {'Authorization': "Bearer " + api_key}
+#			)
+#			status = response.json()['status']
+#			if status == 'valid':
+#				
+#			elif status == 'invalid':
+				
 
-elif language == 2:
-	print('\n\t\t[1] analisar um único email\n\t\t[2] analisar múltiplos emails\n\t\t[3] sair\n')
-	cod = int(input('Digite o código: '))
 
-elif language == 3:
-	print('exiting | saindo')
 
-if cod == 1:
-	email_indiv() 
-#elif cod == 2:		--> Coming Soon
-	#email_multip()
-elif cod == 3:
+def select_language(language):
 	if language == 1:
-		print('Goodbye!')
+		print('\n\t\t[1] analyze a single email\n\t\t[2] analyze multiple emails\n\t\t[3] = exit\n')
+		cod = int(input('Type the code: '))
+		select_code(cod)
 	elif language == 2:
-		print('Até mais ^. .^ <- Isto é um gato')
+		print('\n\t\t[1] analisar um único email\n\t\t[2] analisar múltiplos emails\n\t\t[3] sair\n')
+		cod = int(input('Digite o código: '))
+		select_code(cod)
+	elif language == 3:
+		print('\nexiting | saindo \n')
+
+def select_code(cod):
+	if cod == 1:
+		email_indiv()
+	# elif cod == 2:		--> Coming Soon
+		# email_multip()
+	elif cod == 3:
+		if language == 1:
+			print('Goodbye!')
+		elif language == 2:
+			print('Até mais ^. .^ <- Isto é um gato')
+
+# --------------------------
+
+try:
+	welcome()
+	language = int(input("\n--> "))
+	select_language(language)
+except KeyboardInterrupt:
+	print("ctrl + c")
+
+
+
+
+
 
