@@ -87,25 +87,42 @@ def email_indiv():
 		elif language == 2:
 			print('Até mais ;)')
 
-#def email_multip(name_list):
-#	email_valid = 
-#
-#	if language == 1:
-#		name_list = str(input("Name list of the emails -> "))
-#	elif language == 2:
-#		name_list = str(input("Nome da lista de emails -> "))
-#	with open(name_list, "r") as list:
-#		emails = list.read().split('\n')
-#		for email in emails:
-#			response = requests.get(
-#			"https://isitarealemail.com/api/email/validate",
-#			params = {'email': email},
-#			headers = {'Authorization': "Bearer " + api_key}
-#			)
-#			status = response.json()['status']
-#			if status == 'valid':
-#				
-#			elif status == 'invalid':
+def email_multip(name_list):
+	result_email = {}
+	try:
+		with open(name_list, "r") as list:
+			emails = list.read().split('\n')
+			emails.remove('')
+			for email in emails:
+				response = requests.get(
+				"https://isitarealemail.com/api/email/validate",
+				params = {'email': email},
+				headers = {'Authorization': "Bearer " + api_key}
+				)
+				status = response.json()['status']
+			
+				result_email[email] = status
+
+			
+
+			for email_address in result_email.keys():
+				#if language == 1:
+				print(email_address, ":", result_email[email_address])
+				#elif language == 2:
+					#if status == 'valid':
+						#print("\nO email:", email_address, "é válido")
+					#elif status == "invalid":
+						#print("\nO email:", email_address, "é inválido")
+	except KeyboardInterrupt:
+		if language == 1:
+			print("\nGoodbye !\n")
+		elif language == 2:
+			print("\nAté mais amigo cibernético ;D\n")
+	
+	if language == 1:
+		print("\nGoodbye !\n")
+	elif language == 2:
+		print("\nAté mais amigo cibernético ;D")
 				
 
 
@@ -125,13 +142,23 @@ def select_language(language):
 def select_code(cod):
 	if cod == 1:
 		email_indiv()
-	# elif cod == 2:		--> Coming Soon
-		# email_multip()
+	elif cod == 2:
+		try:
+			if language == 1:
+				name_list = str(input("\nName of the email list -> "))
+			elif language == 2:
+				name_list = str(input("\nNome da lista de emails -> "))
+			email_multip(name_list)
+		except KeyboardInterrupt:
+			if language == 1:
+				print('Bye bye !')
+			elif language == 2:
+				print("ctrl + c \nAté mais, que a força esteja com você ;)")
 	elif cod == 3:
 		if language == 1:
-			print('Goodbye!')
+			print('Goodbye!\n')
 		elif language == 2:
-			print('Até mais ^. .^ <- Isto é um gato')
+			print('Até mais ! ^. .^ 			<-- Isso é um gato\n')
 
 # --------------------------
 
