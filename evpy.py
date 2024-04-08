@@ -22,7 +22,7 @@ import os
 
 # The API key is for testing purposes, maybe I'll leave it in the script.
 
-api_key = '4a6bddfb-fbdf-41b4-9e96-34de7d23d5b5'
+api_key = str(input("Digite sua chave api: "))
 
 # Functions
 
