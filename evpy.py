@@ -1,176 +1,106 @@
-#--------------------------------------------------------------#
-#----------------------------- EVPY ---------------------------#
-#--------------------------------------------------------------#
-
 import requests
 import os
 
-#---------------- PT-BR -----------------------------------
-
-# Acesse https://isitarealemail.com e cadastre-se no site.
-# Depois do cadastro ter sido feito, acesse: https://isitarealemail.com/getting-started/api
-# e use a chave api no script. :)
-
-# A chave API é para fim de testes, talvez eu a deixe no script.
-# ---------------------------------------------------------
-
-# ------------------ EN -----------------------------------
-# 
-# Visit https://isitarealemail.com and register on the site.
-# After registration has been done, go to: https://isitarealemail.com/getting-started/api
-# and use the api key in the script. :)
-
-# The API key is for testing purposes, maybe I'll leave it in the script.
-
-api_key = str(input("Digite sua chave api: "))
-
-# Functions
-
+# Função de boas-vindas
 def welcome():
-	os.system('cls' if os.name == 'nt' else 'clear')
-	print('''
-		8 8888888888 `8.`888b           ,8' 8888888 8888888888 
-		8 8888        `8.`888b         ,8'        8 8888       
-		8 8888         `8.`888b       ,8'         8 8888       
-		8 8888          `8.`888b     ,8'          8 8888       
-		8 888888888888   `8.`888b   ,8'           8 8888       
-		8 8888            `8.`888b ,8'            8 8888       
-		8 8888             `8.`888b8'             8 8888       
-		8 8888              `8.`888'              8 8888       
-		8 8888               `8.`8'               8 8888       
-		8 888888888888        `8.`                8 8888 
-		\n   
-	''')
-	print("\n\t\t[1] EN (English)\n\t\t[2] PT-BR (Portuguese - Brazil)\n\t\t[3] exit | sair")
+    os.system('cls' if os.name == 'nt' else 'clear')
+    print('''
+        8 8888888888 `8.`888b           ,8' 8888888 8888888888 
+        8 8888        `8.`888b         ,8'        8 8888       
+        8 8888         `8.`888b       ,8'         8 8888       
+        8 8888          `8.`888b     ,8'          8 8888       
+        8 888888888888   `8.`888b   ,8'           8 8888       
+        8 8888            `8.`888b ,8'            8 8888       
+        8 8888             `8.`888b8'             8 8888       
+        8 8888              `8.`888'              8 8888       
+        8 8888               `8.`8'               8 8888       
+        8 888888888888        `8.`                8 8888 
+        \n   
+    ''')
+    print("\n\t\tCriado por imLaeL\n")
+    print("\n\t1. Verificar um e-mail\n\t2. Verificar uma lista de e-mails\n")
 
+# Função para verificar um e-mail individual
+def email_indiv(api_key):
+    try:
+        email = input("Digite o email para validar: ")
 
+        # Endpoint da API
+        url = f"https://api.hunter.io/v2/email-verifier?email={email}&api_key={api_key}"
 
-def email_indiv():
-	try:
-		if language == 1:
-			email = str(input('\nEmail to verify -> '))
-		elif language == 2:
-			email = str(input('\nEmail para verificar -> '))
+        # Fazendo a requisição GET
+        response = requests.get(url)
 
-		response = requests.get(
-		"https://isitarealemail.com/api/email/validate",
-		params = {'email': email},
-		headers = {'Authorization': "Bearer " + api_key}
-		)
+        # Processando a resposta
+        if response.status_code == 200:
+            data = response.json()
+            if data["data"]["result"] == "deliverable":
+                print(f"O e-mail '{email}' é válido.")
+            else:
+                print(f"O e-mail '{email}' NÃO é válido.")
+        else:
+            print(f"Erro na requisição. Status code: {response.status_code}, Detalhes: {response.text}")
 
-		status = response.json()['status']
-		
-		if language == 1:
-			if status == "valid":
-				print("\nThe email: %s is valid\n" % email)
-			elif status == "invalid":
-				print("\nThe email: %s is invalid\n" % email)
-				email_indiv()
-			else:
-				print("\nThe email provided was not found\n")
-				email_indiv()
-		
-		elif language == 2:
-			if status == "valid":
-				print("\nO email: %s é válido\n" % email)
-			elif status == "invalid":
-				print("\nO email: %s é inválido\n" % email)
-				email_indiv()
-			else:
-				print("\nO email fornecido não foi achado\n")
-				email_indiv()
-		
+    except requests.exceptions.RequestException as e:
+        print(f"Erro ao realizar a requisição: {e}")
+    except Exception as e:
+        print(f"Ocorreu um erro inesperado: {e}")
 
-	except KeyboardInterrupt:
-		if language == 1:
-			print("Until later ;)")
-		elif language == 2:
-			print('Até mais ;)')
+# Função para verificar uma lista de e-mails
+def email_list(api_key):
+    try:
+        file_path = input("Digite o caminho do arquivo contendo a lista de e-mails: ")
 
-def email_multip(name_list):
-	result_email = {}
-	try:
-		with open(name_list, "r") as list:
-			emails = list.read().split('\n')
-			emails.remove('')
-			for email in emails:
-				response = requests.get(
-				"https://isitarealemail.com/api/email/validate",
-				params = {'email': email},
-				headers = {'Authorization': "Bearer " + api_key}
-				)
-				status = response.json()['status']
-			
-				result_email[email] = status
+        if not os.path.exists(file_path):
+            print("O arquivo não existe.")
+            return
 
-			
+        with open(file_path, "r") as file:
+            emails = [email.strip() for email in file.readlines() if email.strip()]
 
-			for email_address in result_email.keys():
-				#if language == 1:
-				print(email_address, ":", result_email[email_address])
-				#elif language == 2:
-					#if status == 'valid':
-						#print("\nO email:", email_address, "é válido")
-					#elif status == "invalid":
-						#print("\nO email:", email_address, "é inválido")
-	except KeyboardInterrupt:
-		if language == 1:
-			print("\nGoodbye !\n")
-		elif language == 2:
-			print("\nAté mais amigo cibernético ;D\n")
-	
-	if language == 1:
-		print("\nGoodbye !\n")
-	elif language == 2:
-		print("\nAté mais amigo cibernético ;D")
-				
+        for email in emails:
+            url = f"https://api.hunter.io/v2/email-verifier?email={email}&api_key={api_key}"
+            response = requests.get(url)
 
+            if response.status_code == 200:
+                data = response.json()
+                if data["data"]["result"] == "deliverable":
+                    print(f"O e-mail '{email}' é válido.")
+                else:
+                    print(f"O e-mail '{email}' NÃO é válido.")
+            else:
+                print(f"Erro na requisição. Status code: {response.status_code}, Detalhes: {response.text}")
 
+    except requests.exceptions.RequestException as e:
+        print(f"Erro ao realizar a requisição: {e}")
+    except Exception as e:
+        print(f"Ocorreu um erro inesperado: {e}")
 
-def select_language(language):
-	if language == 1:
-		print('\n\t\t[1] analyze a single email\n\t\t[2] analyze multiple emails\n\t\t[3] = exit\n')
-		cod = int(input('Type the code: '))
-		select_code(cod)
-	elif language == 2:
-		print('\n\t\t[1] analisar um único email\n\t\t[2] analisar múltiplos emails\n\t\t[3] sair\n')
-		cod = int(input('Digite o código: '))
-		select_code(cod)
-	elif language == 3:
-		print('\nexiting | saindo \n')
+# Função principal
+def main():
+    try:
+        api_key = input("Digite sua chave API: ").strip()
+        
+        if not api_key:
+            print("Você precisa fornecer uma chave de API válida.")
+            return
 
-def select_code(cod):
-	if cod == 1:
-		email_indiv()
-	elif cod == 2:
-		try:
-			if language == 1:
-				name_list = str(input("\nName of the email list -> "))
-			elif language == 2:
-				name_list = str(input("\nNome da lista de emails -> "))
-			email_multip(name_list)
-		except KeyboardInterrupt:
-			if language == 1:
-				print('Bye bye !')
-			elif language == 2:
-				print("ctrl + c \nAté mais, que a força esteja com você ;)")
-	elif cod == 3:
-		if language == 1:
-			print('Goodbye!\n')
-		elif language == 2:
-			print('Até mais ! ^. .^ 			<-- Isso é um gato\n')
+        welcome()
+        try:
+            option = int(input("Escolha uma opção: "))
+        except ValueError:
+            print("Opção inválida. Digite apenas números.")
+            return
 
-# --------------------------
+        if option == 1:
+            email_indiv(api_key)
+        elif option == 2:
+            email_list(api_key)
+        else:
+            print("Opção inválida.")
+    except KeyboardInterrupt:
+        print("\nExecução interrompida pelo usuário.")
 
-try:
-	welcome()
-	language = int(input("\n--> "))
-	select_language(language)
-except KeyboardInterrupt:
-	print("ctrl + c")
-
-
-
-
-
-
+# Executa o programa
+if __name__ == "__main__":
+    main()
